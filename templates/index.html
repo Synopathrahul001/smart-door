@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Door</title>
+</head>
+<body>
+
+<h2>Visitor Image</h2>
+
+<img id="visitor" width="300"/><br><br>
+
+<button onclick="allow()">ALLOW</button>
+<button onclick="deny()">DENY</button>
+
+<script>
+const firebaseURL = "https://smart-door-lock-715ba-default-rtdb.firebaseio.com/door.json";
+
+function loadImage() {
+  fetch(firebaseURL)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("visitor").src = data.image_url;
+    });
+}
+
+function allow() {
+  fetch(firebaseURL, {
+    method: "PATCH",
+    body: JSON.stringify({ decision: "ALLOW" })
+  });
+}
+
+function deny() {
+  fetch(firebaseURL, {
+    method: "PATCH",
+    body: JSON.stringify({ decision: "DENY" })
+  });
+}
+
+setInterval(loadImage, 3000);
+</script>
+
+</body>
+</html>
